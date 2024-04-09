@@ -1,6 +1,5 @@
 package com.br.sgme.controller.receita;
 
-import com.br.sgme.controller.despesa.dto.DespesaDto;
 import com.br.sgme.controller.receita.dto.ReceitaDto;
 import com.br.sgme.ports.ReceitaUseCase;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-import static com.br.sgme.enums.UrlCrossOrigin.URL_CROSS_ORIGIN;
+import static com.br.sgme.utils.UrlCrossOrigin.URL_CROSS_ORIGIN;
 
 @CrossOrigin(URL_CROSS_ORIGIN)
 @RestController

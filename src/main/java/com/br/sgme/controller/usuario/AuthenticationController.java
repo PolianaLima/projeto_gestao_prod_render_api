@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.br.sgme.enums.UrlCrossOrigin.URL_CROSS_ORIGIN;
+import static com.br.sgme.utils.UrlCrossOrigin.URL_CROSS_ORIGIN;
 
 @CrossOrigin(URL_CROSS_ORIGIN)
 @RestController

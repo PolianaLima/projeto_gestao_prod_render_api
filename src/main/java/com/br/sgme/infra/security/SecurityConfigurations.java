@@ -20,7 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-import static com.br.sgme.enums.UrlCrossOrigin.URL_CROSS_ORIGIN;
+import static com.br.sgme.utils.UrlCrossOrigin.URL_CROSS_ORIGIN;
 
 @Configuration
 @EnableWebSecurity
