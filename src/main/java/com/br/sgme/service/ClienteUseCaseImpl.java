@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -32,6 +33,9 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
 
         ResponseEntity<ErrorDetails> cpfIsPresent = verificaCpf(clienteDto);
         if (cpfIsPresent != null) return cpfIsPresent;
+
+        ResponseEntity<ErrorDetails> dataNascimento = validaDataNascimento(clienteDto);
+        if (dataNascimento != null) return dataNascimento;
 
         Cliente cliente = Cliente.builder()
                 .usuario(usuario)
@@ -54,6 +58,11 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
             ResponseEntity<ErrorDetails>cpfIsPresent = verificaCpf(clienteDto);
             if (cpfIsPresent != null && !Objects.equals(clienteDto.getCpf(), clienteSlecionado.getCpf()))
                 return cpfIsPresent;
+
+            ResponseEntity<ErrorDetails> dataNascimento = validaDataNascimento(clienteDto);
+            if (dataNascimento != null) return dataNascimento;
+
+
 
             Cliente cliente = Cliente.builder()
                     .id(clienteSlecionado.getId())
@@ -106,6 +115,14 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
         if (clienteRepository.findByCpfAndUsuarioId(data.getCpf(), data.getIdUsuario()).isPresent()) {
             return ResponseEntity.status(HttpStatus.FOUND)
                     .body(new ErrorDetails("Cpf cadastrado", LocalDateTime.now(), HttpStatus.UNPROCESSABLE_ENTITY.value()));
+        }
+        return null;
+    }
+
+    private ResponseEntity<ErrorDetails> validaDataNascimento(ClienteDto data) {
+        if (data.getDataNascimento().isAfter(ChronoLocalDate.from(LocalDateTime.now()))) {
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .body(new ErrorDetails("Data de nascimento invalida, a data de nascimento deve ser menor que a data atual", LocalDateTime.now(), HttpStatus.UNPROCESSABLE_ENTITY.value()));
         }
         return null;
     }

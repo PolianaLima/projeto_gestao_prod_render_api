@@ -1,5 +1,6 @@
 package com.br.sgme.service;
 
+import com.br.sgme.controller.cliente.dto.ClienteDto;
 import com.br.sgme.controller.despesa.dto.DespesaDto;
 import com.br.sgme.enums.FormasPagamento;
 import com.br.sgme.exceptions.ErrorDetails;
@@ -16,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -38,6 +41,10 @@ public class DespesaUseCaseImpl implements DespesaUseCase {
 
         if (observacao == null) observacao = "";
 
+        ResponseEntity<ErrorDetails> dataVencimento = validaDataVencimento(despesaDto);
+        if (dataVencimento != null) return dataVencimento;
+
+
         despesaRepository.save(Despesa.builder()
                 .usuario(usuario)
                 .fornecedor(fornecedor)
@@ -56,8 +63,6 @@ public class DespesaUseCaseImpl implements DespesaUseCase {
 
         try {
             Despesa despesaSelecionada = despesaRepository.findById(id).get();
-
-
 
             despesaRepository.save(Despesa.builder()
                     .id(despesaSelecionada.getId())
@@ -98,5 +103,14 @@ public class DespesaUseCaseImpl implements DespesaUseCase {
         if (despesaRepository.findById(id).isEmpty()) throw new RecursoNaoEncontradoException("Despesa nao encontrada");
         despesaRepository.deleteById(id);
 
+    }
+
+
+    private ResponseEntity<ErrorDetails> validaDataVencimento(DespesaDto data) {
+        if (data.getDataVencimento().isBefore(ChronoLocalDate.from(LocalDateTime.now()))) {
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .body(new ErrorDetails("Data de vencimento invalida, a data de vencimento deve ser maior que a data atual", LocalDateTime.now(), HttpStatus.UNPROCESSABLE_ENTITY.value()));
+        }
+        return null;
     }
 }
