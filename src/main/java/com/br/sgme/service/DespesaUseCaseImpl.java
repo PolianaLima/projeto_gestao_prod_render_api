@@ -53,6 +53,7 @@ public class DespesaUseCaseImpl implements DespesaUseCase {
                 .status(despesaDto.getStatus())
                 .pagamento(FormasPagamento.valueOf(despesaDto.getFormaPagamento()))
                 .observacao(observacao)
+                .data_created(LocalDateTime.now().toLocalDate())
                 .build());
 
         return ResponseEntity.status(HttpStatus.CREATED).build();

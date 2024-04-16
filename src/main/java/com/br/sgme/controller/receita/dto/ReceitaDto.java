@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -35,6 +36,10 @@ public class ReceitaDto {
 
     private String observacao;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonProperty("data_created")
+    private LocalDate dataCreated;
+
     public static ReceitaDto to(Receita saved){
         return new ReceitaDto(
                 saved.getId(),
@@ -44,7 +49,8 @@ public class ReceitaDto {
                 saved.getDataVencimento(),
                 saved.getStatus(),
                 saved.getPagamento().name(),
-                saved.getObservacao()
+                saved.getObservacao(),
+                saved.getData_created()
         );
     }
 

@@ -45,4 +45,7 @@ public class Receita {
 
     private String observacao;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate data_created;
+
 }
