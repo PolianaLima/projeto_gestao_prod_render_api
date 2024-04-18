@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -19,11 +22,22 @@ public class FornecedorDto {
 
     private String nome;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonProperty("data_created")
+    private LocalDate dataCreated;
+
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonProperty("data_updated")
+    private LocalDate dataUpdated;
+
     public static FornecedorDto to(Fornecedor saved) {
        return new FornecedorDto( saved.getId(),
                 saved.getUsuario().getId(),
                 saved.getCnpj(),
-                saved.getNome()
+                saved.getNome(),
+               saved.getData_created(),
+               saved.getData_updated()
        );
     }
 

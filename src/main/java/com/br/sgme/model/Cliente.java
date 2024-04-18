@@ -25,7 +25,7 @@ public class Cliente {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @Column(nullable = false, length = 11)
+    @Column(length = 14)
     private String cpf;
 
     @Column(nullable = false, length = 80)
@@ -34,7 +34,13 @@ public class Cliente {
     @Column(nullable = false, length = 15)
     private String telefone;
 
-    @Column(name = "data_nascimento", nullable = false)
+    @Column(name = "data_nascimento")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dataNascimento;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate data_created;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate data_updated;
 }

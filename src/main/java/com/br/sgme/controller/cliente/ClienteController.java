@@ -25,10 +25,6 @@ public class ClienteController {
     public List<ClienteDto> getAllClientes(@RequestParam UUID idUsuario){
         return clienteUseCase.get((idUsuario).toString());
     }
-   @GetMapping("/cpf")
-    public ClienteDto getClienteCPF(@RequestParam String cpf, @RequestParam("usuarioId") UUID idUsuario){
-        return clienteUseCase.getByCpf(cpf, (idUsuario).toString());
-    }
 
     @GetMapping("/{id}")
     public ClienteDto getClienteById(@PathVariable UUID id){

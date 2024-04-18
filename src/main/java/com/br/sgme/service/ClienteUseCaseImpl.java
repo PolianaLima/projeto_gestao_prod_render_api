@@ -43,6 +43,7 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
                 .nome(clienteDto.getNome())
                 .dataNascimento(clienteDto.getDataNascimento())
                 .telefone(clienteDto.getTelefone())
+                .data_created(LocalDateTime.now().toLocalDate())
                 .build();
 
         Cliente saved = clienteRepository.save(cliente);
@@ -71,6 +72,8 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
                     .nome(clienteDto.getNome())
                     .dataNascimento(clienteDto.getDataNascimento())
                     .telefone(clienteDto.getTelefone())
+                    .data_created(clienteSlecionado.getData_created())
+                    .data_updated(LocalDateTime.now().toLocalDate())
                     .build();
 
             clienteRepository.save(cliente);
@@ -112,17 +115,23 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
     }
 
     private ResponseEntity<ErrorDetails> verificaCpf(ClienteDto data) {
-        if (clienteRepository.findByCpfAndUsuarioId(data.getCpf(), data.getIdUsuario()).isPresent()) {
+        if (data.getCpf().isEmpty() ){
+            return null;
+        }else if (clienteRepository.findByCpfAndUsuarioId(data.getCpf(), data.getIdUsuario()).isPresent()) {
             return ResponseEntity.status(HttpStatus.FOUND)
                     .body(new ErrorDetails("Cpf cadastrado", LocalDateTime.now(), HttpStatus.UNPROCESSABLE_ENTITY.value()));
+        }else {
+            return null;
         }
-        return null;
     }
 
     private ResponseEntity<ErrorDetails> validaDataNascimento(ClienteDto data) {
-        if (data.getDataNascimento().isAfter(ChronoLocalDate.from(LocalDateTime.now()))) {
+
+        if (data.getDataNascimento() != null && data.getDataNascimento().isAfter(ChronoLocalDate.from(LocalDateTime.now()))) {
             return ResponseEntity.status(HttpStatus.FOUND)
-                    .body(new ErrorDetails("Data de nascimento invalida, a data de nascimento deve ser menor que a data atual", LocalDateTime.now(), HttpStatus.UNPROCESSABLE_ENTITY.value()));
+                    .body(new ErrorDetails("Data de nascimento invalida, a data de nascimento deve ser menor que a data atual",
+                            LocalDateTime.now(),
+                            HttpStatus.UNPROCESSABLE_ENTITY.value()));
         }
         return null;
     }

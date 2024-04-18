@@ -39,6 +39,11 @@ public class DespesaDto {
     @JsonProperty("data_created")
     private LocalDate dataCreated;
 
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonProperty("data_updated")
+    private LocalDate dataUpdated;
+
     public static DespesaDto to(Despesa saved){
         return new DespesaDto(
                 saved.getId(),
@@ -49,7 +54,8 @@ public class DespesaDto {
                 saved.getStatus(),
                 saved.getPagamento().name(),
                 saved.getObservacao(),
-                saved.getData_created()
+                saved.getData_created(),
+                saved.getData_updated()
         );
     }
 

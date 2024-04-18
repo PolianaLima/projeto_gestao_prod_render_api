@@ -1,6 +1,6 @@
 package com.br.sgme.model;
 
-import com.br.sgme.enums.FormasPagamento;
+import com.br.sgme.enums.Status;
 import com.br.sgme.model.usuario.Usuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,40 +15,37 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "receitas")
-public class Receita {
+@Entity(name = "produtos")
+public class Produto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy =  GenerationType.UUID)
     private String id;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+    @Column(nullable = false, length = 80)
+    private String nome;
 
-    @Column(nullable = false)
-    private Double valor;
+    @Column(length = 20)
+    private String codigo;
 
-    @Column(name = "data_vencimento", nullable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDate dataVencimento;
+    @Column(nullable = false, length = 60)
+    private Double preco;
 
+    private Double custo;
+
+    @Column(nullable = false, length = 80)
     private String status;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private FormasPagamento pagamento;
-
-    private String observacao;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate data_created;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate data_updated;
+
+
 
 }

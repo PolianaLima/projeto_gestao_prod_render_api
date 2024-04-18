@@ -40,6 +40,11 @@ public class ReceitaDto {
     @JsonProperty("data_created")
     private LocalDate dataCreated;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonProperty("data_updated")
+    private LocalDate dataUpdated;
+
+
     public static ReceitaDto to(Receita saved){
         return new ReceitaDto(
                 saved.getId(),
@@ -50,7 +55,8 @@ public class ReceitaDto {
                 saved.getStatus(),
                 saved.getPagamento().name(),
                 saved.getObservacao(),
-                saved.getData_created()
+                saved.getData_created(),
+                saved.getData_updated()
         );
     }
 

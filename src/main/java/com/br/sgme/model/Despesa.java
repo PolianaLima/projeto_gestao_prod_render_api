@@ -48,4 +48,7 @@ public class Despesa {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate data_created;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate data_updated;
+
 }

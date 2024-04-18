@@ -74,6 +74,8 @@ public class ReceitaUseCaseImpl implements ReceitaUseCase {
                     .status(receitaDto.getStatus())
                     .pagamento(FormasPagamento.valueOf(receitaDto.getFormaPagamento()))
                     .observacao(receitaDto.getObservacao())
+                    .data_created(receitaSelecionada.getData_created())
+                    .data_updated(LocalDateTime.now().toLocalDate())
                     .build());
 
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();

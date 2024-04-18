@@ -37,6 +37,7 @@ public class FornecedorUseCaseImpl implements FornecedorUseCase {
                 .usuario(usuario)
                 .cnpj(fornecedorDto.getCnpj())
                 .nome(fornecedorDto.getNome())
+                .data_created(LocalDateTime.now().toLocalDate())
                 .build());
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -56,17 +57,19 @@ public class FornecedorUseCaseImpl implements FornecedorUseCase {
                     .usuario(fornecedorSelecionado.getUsuario())
                     .cnpj(fornecedorDto.getCnpj())
                     .nome(fornecedorDto.getNome())
+                    .data_created(fornecedorSelecionado.getData_created())
+                    .data_updated(LocalDateTime.now().toLocalDate())
                     .build());
 
             return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 
-        }catch (NoSuchElementException exception){
+        } catch (NoSuchElementException exception) {
             throw new RecursoNaoEncontradoException("Fornecedor não encontrado");
         }
     }
 
     @Override
-    public List <FornecedorDto> get(String idUsuario) {
+    public List<FornecedorDto> get(String idUsuario) {
         return fornecedorRepository.findByUsuarioId(idUsuario)
                 .stream()
                 .map(FornecedorDto::to)
@@ -79,7 +82,7 @@ public class FornecedorUseCaseImpl implements FornecedorUseCase {
                 .stream()
                 .map(FornecedorDto::to)
                 .findFirst()
-                .orElseThrow(()->new RecursoNaoEncontradoException("Fornecedor não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Fornecedor não encontrado"));
     }
 
     @Override
@@ -87,12 +90,13 @@ public class FornecedorUseCaseImpl implements FornecedorUseCase {
         return fornecedorRepository.findByCnpjAndUsuarioId(cnpj, idUsuario)
                 .stream()
                 .map(FornecedorDto::to).findFirst()
-                .orElseThrow(()->new RecursoNaoEncontradoException("Fornecedor não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Fornecedor não encontrado"));
     }
 
     @Override
     public void delete(String id) {
-        if(fornecedorRepository.findById(id).isEmpty())throw new RecursoNaoEncontradoException("Fornecedor não encontrado");
+        if (fornecedorRepository.findById(id).isEmpty())
+            throw new RecursoNaoEncontradoException("Fornecedor não encontrado");
         fornecedorRepository.deleteById(id);
 
     }

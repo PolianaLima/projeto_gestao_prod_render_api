@@ -1,6 +1,6 @@
-package com.br.sgme.controller.cliente.dto;
+package com.br.sgme.controller.produtos.dto;
 
-import com.br.sgme.model.Cliente;
+import com.br.sgme.model.Produto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,42 +12,34 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class ClienteDto {
-    private String id;
+public class ProdutoDto {
+    public String id;
 
     @JsonProperty("usuario_id")
-    private String idUsuario;
-
-
-    private String cpf;
-
-    private String nome;
-
-    private String telefone;
-
-    @JsonProperty("data_nascimento")
-    private LocalDate dataNascimento;
-
+    public String idUsuario;
+    public String nome;
+    public String codigo;
+    public Double preco;
+    public Double custo;
+    public String status;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonProperty("data_created")
     private LocalDate dataCreated;
-
-
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @JsonProperty("data_updated")
     private LocalDate dataUpdated;
 
-    public static ClienteDto to(Cliente saved){
-        return new ClienteDto(
+    public static ProdutoDto to(Produto saved) {
+        return new ProdutoDto(
                 saved.getId(),
                 saved.getUsuario().getId(),
-                saved.getCpf(),
                 saved.getNome(),
-                saved.getTelefone(),
-                saved.getDataNascimento(),
+                saved.getCodigo(),
+                saved.getPreco(),
+                saved.getCusto(),
+                saved.getStatus(),
                 saved.getData_created(),
                 saved.getData_updated()
-                );
+        );
     }
 }
