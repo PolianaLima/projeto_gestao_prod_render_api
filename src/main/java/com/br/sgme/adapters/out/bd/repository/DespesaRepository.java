@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface DespesaRepository extends JpaRepository<DespesaEntityBd, String> {
-    @Query("SELECT c FROM despesas c WHERE c.usuario.id = :usuarioId")
+    @Query("SELECT c FROM despesas c WHERE c.usuario.id = :usuarioId ORDER BY c.dataVencimento ASC")
     List<DespesaEntityBd> findByUsuarioId(@Param("usuarioId") String usuarioId);
 
     @Query("SELECT c FROM despesas c WHERE c.id = :id AND c.usuario.id = :usuarioId")

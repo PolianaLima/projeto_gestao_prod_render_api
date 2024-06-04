@@ -26,6 +26,8 @@ public class DespesaDto {
     @JsonProperty("fornecedor_id")
     private String idFornecedor;
 
+    @JsonProperty("nome")
+    private String nomeFornecedor;
 
     private Double valor;
 
@@ -53,6 +55,7 @@ public class DespesaDto {
                 .id(despesa.getId())
                 .idUsuario(despesa.getUsuario().getId())
                 .idFornecedor(despesa.getFornecedor().getId())
+                .nomeFornecedor(despesa.getFornecedor().getNome())
                 .valor(despesa.getValor())
                 .dataVencimento(despesa.getDataVencimento())
                 .formaPagamento(despesa.getPagamento().name())

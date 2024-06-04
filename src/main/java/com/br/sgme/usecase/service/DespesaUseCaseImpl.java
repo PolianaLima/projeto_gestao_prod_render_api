@@ -2,6 +2,7 @@ package com.br.sgme.usecase.service;
 
 import com.br.sgme.adapters.in.controller.despesa.dto.DespesaDto;
 import com.br.sgme.adapters.out.bd.model.Usuario;
+import com.br.sgme.config.exceptions.ErrorDataException;
 import com.br.sgme.config.exceptions.ErrorDetails;
 import com.br.sgme.domain.Despesa;
 import com.br.sgme.domain.Fornecedor;
@@ -31,6 +32,9 @@ public class DespesaUseCaseImpl implements DespesaUseCase {
         Usuario usuario = getUsuarioLogado(token);
         Fornecedor fornecedor = getFornecedor(despesa.getFornecedor().getId(), usuario.getId());
 
+        //criar feature de verificação de data de vencimento
+        verificarDataVencimento(despesa);
+
         Despesa despesaSalvar = Despesa.builder()
                 .usuario(usuario)
                 .fornecedor(fornecedor)
@@ -50,6 +54,8 @@ public class DespesaUseCaseImpl implements DespesaUseCase {
     public void update(Despesa despesa, String token) {
         Usuario usuario = getUsuarioLogado(token);
         Despesa despesaSelecionada = getDespesaById(despesa.getId(), usuario.getId());
+
+        verificarDataVencimentoUpdate(despesa, despesaSelecionada);
 
         Despesa despesaUpdate = Despesa.builder()
                 .id(despesaSelecionada.getId())
@@ -88,6 +94,18 @@ public class DespesaUseCaseImpl implements DespesaUseCase {
     }
 
 
+    private void verificarDataVencimento(Despesa despesa) {
+        if (despesa.getDataVencimento().isBefore(ChronoLocalDate.from(LocalDateTime.now()))) {
+            throw new ErrorDataException("Data de vencimento não pode ser menor que a data atual");
+        }
+    }
+
+    private void verificarDataVencimentoUpdate(Despesa despesa, Despesa despesaSelecionada) {
+        if(!despesaSelecionada.getDataVencimento().isEqual(despesa.getDataVencimento()) &&
+                despesa.getDataVencimento().isBefore(ChronoLocalDate.from(LocalDateTime.now()))){
+           throw new ErrorDataException("Data de vencimento não pode ser menor que a data atual");
+        }
+    }
 
     private Usuario getUsuarioLogado(String token) {
         return usuarioLogado.getUsuarioLogado(token);

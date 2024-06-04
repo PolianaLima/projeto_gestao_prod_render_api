@@ -118,7 +118,7 @@ public class ClienteUseCaseImpl implements ClienteUseCase {
         if (verificaDocumentoBd && !Objects.equals(clienteSelecionado.getDocumento(), clienteUpdate.getDocumento())) {
             Cliente cliente = clienteAdapterDb.findByDocumento(clienteUpdate.getDocumento(), clienteSelecionado.getUsuario().getId());
             if(!Objects.equals(cliente.getDocumento(), clienteSelecionado.getDocumento())){
-                throw new ErrorDataException("Cpf já cadastrado");
+                throw new ErrorDataException("Documento já cadastrado");
             }
         }
     }

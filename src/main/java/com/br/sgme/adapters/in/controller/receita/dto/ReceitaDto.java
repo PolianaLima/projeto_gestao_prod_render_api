@@ -25,6 +25,9 @@ public class ReceitaDto {
     @JsonProperty("cliente_id")
     private String idCliente;
 
+    @JsonProperty("nome")
+    private String nomeCliente;
+
 
     private Double valor;
 
@@ -53,6 +56,7 @@ public class ReceitaDto {
                 .id(receita.getId())
                 .idUsuario(receita.getUsuario().getId())
                 .idCliente(receita.getCliente().getId())
+                .nomeCliente(receita.getCliente().getNome())
                 .valor(receita.getValor())
                 .dataVencimento(receita.getDataVencimento())
                 .formaPagamento(receita.getPagamento().name())

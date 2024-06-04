@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ReceitaRepository extends JpaRepository<ReceitaEntityBd, String> {
-    @Query("SELECT c FROM receitas c WHERE c.usuario.id = :usuarioId")
+    @Query("SELECT c FROM receitas c WHERE c.usuario.id = :usuarioId ORDER BY c.dataVencimento ASC")
     List<ReceitaEntityBd> findByUsuarioId(@Param("usuarioId") String usuarioId);
 
     @Query("SELECT c FROM receitas c WHERE c.id = :id AND c.usuario.id = :usuarioId")
