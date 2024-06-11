@@ -19,7 +19,7 @@ public class TokenService {
 
     private String secret;
 
-    public TokenService(@Value("${api.security.token.secret}")String secret) {
+    public TokenService(@Value("${api.security.token.secret}") String secret) {
         this.secret = secret;
     }
 

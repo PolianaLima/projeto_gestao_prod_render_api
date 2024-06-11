@@ -18,11 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import java.util.List;
 
-import static com.br.sgme.utils.UrlCrossOrigin.URL_CROSS_ORIGIN;
 
 @Configuration
 @EnableWebSecurity
@@ -30,6 +28,10 @@ public class SecurityConfigurations {
 
     @Autowired
     SecurityFilter securityFilter;
+
+
+    @Value("${cross.origin.url}")
+    private String urlCrossOrigin;
 
 
 
@@ -55,7 +57,7 @@ public class SecurityConfigurations {
 
     public CorsConfigurationSource myWebsiteConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(URL_CROSS_ORIGIN));
+        configuration.setAllowedOrigins(List.of(urlCrossOrigin));
         configuration.setAllowedMethods(List.of("POST"));
         configuration.setAllowedMethods(List.of("GET"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -63,16 +65,6 @@ public class SecurityConfigurations {
         return source;
     }
 
-    @Value("${cross.origin.url}")
-    private String crossOriginUrl;
-
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins(crossOriginUrl)
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true);
-    }
 
 
     @Bean
