@@ -1,6 +1,6 @@
 package com.br.sgme.config.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,15 +24,14 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfigurations {
 
-    @Autowired
-    SecurityFilter securityFilter;
+   private final SecurityFilter securityFilter;
 
 
     @Value("${cross.origin.url}")
     private String urlCrossOrigin;
-
 
 
     @Bean
