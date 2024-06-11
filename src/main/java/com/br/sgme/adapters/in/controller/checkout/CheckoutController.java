@@ -4,9 +4,7 @@ package com.br.sgme.adapters.in.controller.checkout;
 import com.br.sgme.adapters.in.controller.checkout.dto.CheckoutDto;
 import com.br.sgme.domain.Checkout;
 import com.br.sgme.port.in.CheckoutUseCase;
-import com.br.sgme.utils.UrlCrossOrigin;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

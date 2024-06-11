@@ -15,9 +15,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.br.sgme.utils.UrlCrossOrigin.URL_CROSS_ORIGIN;
-
-@CrossOrigin(URL_CROSS_ORIGIN)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/receitas")

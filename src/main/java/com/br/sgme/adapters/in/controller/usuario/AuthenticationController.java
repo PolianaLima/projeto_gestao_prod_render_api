@@ -1,10 +1,9 @@
 package com.br.sgme.adapters.in.controller.usuario;
 
-import com.br.sgme.adapters.in.controller.usuario.dto.LoginResponseDto;
 import com.br.sgme.adapters.in.controller.usuario.dto.AuthenticationDto;
+import com.br.sgme.adapters.in.controller.usuario.dto.LoginResponseDto;
 import com.br.sgme.adapters.in.controller.usuario.dto.RegisterDto;
 import com.br.sgme.adapters.in.controller.usuario.dto.UsuarioReponseDto;
-import com.br.sgme.adapters.out.bd.model.Usuario;
 import com.br.sgme.port.in.UsuarioUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,9 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.br.sgme.utils.UrlCrossOrigin.URL_CROSS_ORIGIN;
-
-@CrossOrigin(URL_CROSS_ORIGIN)
 @RestController
 @RequestMapping("/auth")
 
