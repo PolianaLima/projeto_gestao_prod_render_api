@@ -3,6 +3,8 @@ package com.br.sgme.adapters.in.controller.usuario;
 import com.br.sgme.adapters.in.controller.usuario.dto.LoginResponseDto;
 import com.br.sgme.adapters.in.controller.usuario.dto.AuthenticationDto;
 import com.br.sgme.adapters.in.controller.usuario.dto.RegisterDto;
+import com.br.sgme.adapters.in.controller.usuario.dto.UsuarioReponseDto;
+import com.br.sgme.adapters.out.bd.model.Usuario;
 import com.br.sgme.port.in.UsuarioUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,8 @@ import static com.br.sgme.utils.UrlCrossOrigin.URL_CROSS_ORIGIN;
 @CrossOrigin(URL_CROSS_ORIGIN)
 @RestController
 @RequestMapping("/auth")
+
+
 @RequiredArgsConstructor
 public class AuthenticationController {
 
@@ -29,7 +33,19 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<?> registrer(@RequestBody @Validated RegisterDto data) {
         usuarioUseCase.save(data);
-        return  ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<UsuarioReponseDto> getUser(@RequestHeader("Authorization") String token) {
+        UsuarioReponseDto user = usuarioUseCase.usuarioByToken(token);
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/validateToken")
+    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String token) {
+        usuarioUseCase.validateToken(token);
+        return ResponseEntity.ok().build();
     }
 
 }

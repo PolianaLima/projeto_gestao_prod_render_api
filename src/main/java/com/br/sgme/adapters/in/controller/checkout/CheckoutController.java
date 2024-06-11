@@ -4,16 +4,16 @@ package com.br.sgme.adapters.in.controller.checkout;
 import com.br.sgme.adapters.in.controller.checkout.dto.CheckoutDto;
 import com.br.sgme.domain.Checkout;
 import com.br.sgme.port.in.CheckoutUseCase;
+import com.br.sgme.utils.UrlCrossOrigin;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
-import static com.br.sgme.utils.UrlCrossOrigin.URL_CROSS_ORIGIN;
 
-@CrossOrigin(URL_CROSS_ORIGIN)
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("ckeckouts")

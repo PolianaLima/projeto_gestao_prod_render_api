@@ -62,8 +62,9 @@ public class TokenService {
         return bearerToken;
     }
 
-
-
+    public String getLogin(String token) {
+        return validateToken(token);
+    }
 
     private Instant genExpirationDate() {
         return LocalDateTime.now().plusHours(24).toInstant(ZoneOffset.of("-03:00"));

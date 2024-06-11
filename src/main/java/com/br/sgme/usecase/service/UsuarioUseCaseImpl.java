@@ -3,15 +3,20 @@ package com.br.sgme.usecase.service;
 import com.br.sgme.adapters.in.controller.usuario.dto.AuthenticationDto;
 import com.br.sgme.adapters.in.controller.usuario.dto.LoginResponseDto;
 import com.br.sgme.adapters.in.controller.usuario.dto.RegisterDto;
+import com.br.sgme.adapters.in.controller.usuario.dto.UsuarioReponseDto;
 import com.br.sgme.config.exceptions.LoginInvalidoException;
+import com.br.sgme.config.exceptions.RecursoNaoEncontradoException;
 import com.br.sgme.config.security.TokenService;
 import com.br.sgme.adapters.out.bd.model.Usuario;
 import com.br.sgme.port.in.UsuarioUseCase;
 import com.br.sgme.adapters.out.bd.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +29,11 @@ public class UsuarioUseCaseImpl implements UsuarioUseCase {
     private final UsuarioRepository usuarioRepository;
 
     private final TokenService tokenService;
+
     @Override
     public void save(RegisterDto registerDto) {
 
-       verificarUsuarioEmUso(registerDto);
+        verificarUsuarioEmUso(registerDto);
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerDto.senha());
 
@@ -40,6 +46,7 @@ public class UsuarioUseCaseImpl implements UsuarioUseCase {
     public LoginResponseDto login(AuthenticationDto authenticationDTO) {
 
         var usernamePassword = new UsernamePasswordAuthenticationToken(authenticationDTO.login(), authenticationDTO.senha());
+
         try {
 
             var auth = this.authenticationManager.authenticate(usernamePassword);
@@ -54,7 +61,21 @@ public class UsuarioUseCaseImpl implements UsuarioUseCase {
 
     }
 
+    @Override
+    public UsuarioReponseDto usuarioByToken(String token) {
+        String tokenValido = token.substring(7);
+        String login = tokenService.getLogin(tokenValido);
+        UserDetails userDetails = usuarioRepository.findByLogin(login)
+               .orElseThrow(()-> new RecursoNaoEncontradoException("Usuário não encontrado"));
+       Usuario usuario = (Usuario) userDetails;
+       return UsuarioReponseDto.to(usuario);
+    }
 
+    @Override
+    public void validateToken(String token) {
+        String tokenValido = token.substring(7);
+        tokenService.validateToken(tokenValido);
+    }
 
     private void verificarUsuarioEmUso(RegisterDto data) {
 
@@ -62,4 +83,5 @@ public class UsuarioUseCaseImpl implements UsuarioUseCase {
             throw new LoginInvalidoException("Login em uso");
         }
     }
+
 }

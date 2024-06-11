@@ -4,6 +4,7 @@ import com.br.sgme.adapters.in.controller.cliente.dto.ClienteDto;
 import com.br.sgme.domain.Cliente;
 import com.br.sgme.domain.enums.Status;
 import com.br.sgme.port.in.ClienteUseCase;
+import com.br.sgme.utils.UrlCrossOrigin;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static com.br.sgme.utils.UrlCrossOrigin.URL_CROSS_ORIGIN;
 
-@CrossOrigin(URL_CROSS_ORIGIN)
+@CrossOrigin(UrlCrossOrigin.URL_CROSS_ORIGIN)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("clientes")
