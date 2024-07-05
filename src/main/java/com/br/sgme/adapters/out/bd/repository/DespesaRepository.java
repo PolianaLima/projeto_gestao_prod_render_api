@@ -14,8 +14,8 @@ public interface DespesaRepository extends JpaRepository<DespesaEntityBd, String
     @Query("SELECT c FROM despesas c WHERE c.usuario.id = :usuarioId ORDER BY c.dataVencimento ASC")
     List<DespesaEntityBd> findByUsuarioId(@Param("usuarioId") String usuarioId);
 
-    @Query("SELECT c FROM despesas c WHERE c.id = :id AND c.usuario.id = :usuarioId")
-    Optional<DespesaEntityBd> findByIdAndUsuarioId(@Param("id") String id, @Param("usuarioId") String usuarioId);
+    @Query("SELECT c FROM despesas c WHERE c.id = :idDespesa AND c.usuario.id = :usuarioId")
+    Optional<DespesaEntityBd> findByIdAndUsuarioId(@Param("idDespesa") String idDespesa, @Param("usuarioId") String usuarioId);
 
     @Transactional
     @Modifying

@@ -31,10 +31,7 @@ public class DespesaUseCaseImpl implements DespesaUseCase {
     public void save(Despesa despesa, String token) {
         Usuario usuario = getUsuarioLogado(token);
         Fornecedor fornecedor = getFornecedor(despesa.getFornecedor().getId(), usuario.getId());
-
-        //criar feature de verificação de data de vencimento
         verificarDataVencimento(despesa);
-
         Despesa despesaSalvar = Despesa.builder()
                 .usuario(usuario)
                 .fornecedor(fornecedor)

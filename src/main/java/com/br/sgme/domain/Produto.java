@@ -54,7 +54,13 @@ public class Produto {
 
         if (this.preco != null && this.preco < 0) {
             throw new ErrorDataException("Preço não pode ser negativo");
+
         }
+
+        if (this.custo != null && this.custo < 0) {
+            throw new ErrorDataException("Custo não pode ser negativo");
+        }
+
 
     }
 }

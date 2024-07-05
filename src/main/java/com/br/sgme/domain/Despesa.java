@@ -56,10 +56,6 @@ public class Despesa {
             throw new ErrorDataException("Valor não pode ser  0 ou negativo");
         }
 
-       /* if(this.dataVencimento !=null && dataVencimento.isBefore(LocalDate.now())){
-            throw new ErrorDataException("Data de vencimento deve ser maior que a data atual");
-        }
-*/
         if( this.observacao == null || this.observacao.isEmpty()){
             this.observacao = "";
         }

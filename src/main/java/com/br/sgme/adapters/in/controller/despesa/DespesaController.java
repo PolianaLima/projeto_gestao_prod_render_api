@@ -38,15 +38,16 @@ public class DespesaController {
     @PostMapping("/cadastro")
     public ResponseEntity<?> save(@RequestBody @Validated DespesaDto despesaDto, @RequestHeader("Authorization") String token){
         Despesa despesa = Despesa.builder()
+                .valor(despesaDto.getValor())
                 .fornecedor(Fornecedor.builder()
                         .id(despesaDto.getIdFornecedor())
                         .build())
-                .valor(despesaDto.getValor())
                 .dataVencimento(despesaDto.getDataVencimento())
                 .pagamento(FormasPagamento.valueOf(despesaDto.getFormaPagamento().toUpperCase()))
-                .observacao(despesaDto.getObservacao())
                 .status(StatusContas.valueOf(despesaDto.getStatus().toUpperCase()))
+                .observacao(despesaDto.getObservacao())
                 .build();
+
         despesaUseCase.save(despesa, token);
 
         return ResponseEntity.ok().build();

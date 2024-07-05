@@ -26,7 +26,7 @@ public class ProdutoUseCaseImpl implements ProdutoUseCase {
     public void cadastrar(Produto produto, String token) {
         Usuario usuario = getUsuarioLogado(token);
         verificaCodigo(produto, usuario.getId());
-
+        
         if(produto.getPreco() < produto.getCusto()){
             throw new RecursoNaoEncontradoException("Preço não pode ser menor que o custo");
         }

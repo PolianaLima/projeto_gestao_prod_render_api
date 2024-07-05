@@ -39,6 +39,7 @@ public class VendaController {
                         .build())
                 .pagamento(FormasPagamento.valueOf(vendaRequestDto.getVendaDto().getFormaPagamento().toUpperCase()))
                 .build();
+
         List<ItemVenda> itensVenda = vendaRequestDto.getItensVendaDto().stream()
                 .map(itemVendaDto -> ItemVenda.builder()
                         .idProduto(itemVendaDto.getIdProduto())
