@@ -6,18 +6,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ExceptionHandlerAdvice {
     @ExceptionHandler({LoginInvalidoException.class, JWTVerificationException.class})
     public ResponseEntity<ErrorDetails> loginInvalidoException(LoginInvalidoException exception) {
         return ResponseEntity
-                .status(403)
+                .status(HttpStatus.FORBIDDEN.value())
                 .body(ErrorDetails.builder()
                         .message(exception.getMessage())
-                        .time(LocalDateTime.now())
+                        .time(LocalDateTime.now().toString())
                         .codigo(HttpStatus.FORBIDDEN.value())
                         .build()
                 );
@@ -29,7 +30,7 @@ public class ExceptionHandlerAdvice {
                 .status(404)
                 .body(ErrorDetails.builder()
                         .message(exception.getMessage())
-                        .time(LocalDateTime.now())
+                        .time(LocalDateTime.now().toString())
                         .codigo(HttpStatus.NOT_FOUND.value())
                         .build()
                 );
@@ -41,7 +42,7 @@ public class ExceptionHandlerAdvice {
                 .status(400)
                 .body(ErrorDetails.builder()
                         .message(exception.getMessage())
-                        .time(LocalDateTime.now())
+                        .time(LocalDateTime.now().toString())
                         .codigo(HttpStatus.BAD_REQUEST.value())
                         .build()
                 );

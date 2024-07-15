@@ -16,37 +16,25 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
+    private static final String ISSUER = "sgme-api";
+    private static final String BEARER_PREFIX = "Bearer ";
+    private static final int TOKEN_EXPIRATION_SECONDS = 2;
+    private static final ZoneOffset ZONE_OFFSET = ZoneOffset.of("-03:00");
 
-    private String secret;
+    private final Algorithm algorithm;
 
     public TokenService(@Value("${api.security.token.secret}") String secret) {
-        this.secret = secret;
+        this.algorithm = Algorithm.HMAC256(secret);
     }
-
-    private String generateTokenForSubject(String subject) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.create()
-                    .withIssuer("sgme-api")
-                    .withSubject(subject)
-                    .withExpiresAt(genExpirationDate())
-                    .sign(algorithm);
-        } catch (JWTCreationException exception) {
-            throw new RuntimeException("Erro ao gerar token", exception);
-        }
-    }
-
 
     public String generateToken(Usuario usuario) {
         return generateTokenForSubject(usuario.getLogin());
     }
 
-
     public String validateToken(String token) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.require(algorithm)
-                    .withIssuer("sgme-api")
+                    .withIssuer(ISSUER)
                     .build()
                     .verify(token)
                     .getSubject();
@@ -56,8 +44,8 @@ public class TokenService {
     }
 
     public String extractToken(String bearerToken) {
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+        if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(BEARER_PREFIX.length());
         }
         return bearerToken;
     }
@@ -66,8 +54,19 @@ public class TokenService {
         return validateToken(token);
     }
 
-    private Instant genExpirationDate() {
-        return LocalDateTime.now().plusHours(24).toInstant(ZoneOffset.of("-03:00"));
+    private String generateTokenForSubject(String subject) {
+        try {
+            return JWT.create()
+                    .withIssuer(ISSUER)
+                    .withSubject(subject)
+                    .withExpiresAt(genExpirationDate())
+                    .sign(algorithm);
+        } catch (JWTCreationException exception) {
+            throw new LoginInvalidoException(exception.getMessage());
+        }
     }
 
+    private Instant genExpirationDate() {
+        return LocalDateTime.now().plusDays(TOKEN_EXPIRATION_SECONDS).toInstant(ZONE_OFFSET);
+    }
 }
